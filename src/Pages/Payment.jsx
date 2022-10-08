@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { HiOutlineArrowLeft } from 'react-icons/hi'
 import {FcCheckmark} from 'react-icons/fc'
 import { NavLink, useNavigate } from 'react-router-dom'
@@ -7,10 +7,50 @@ import Stepper from '../components/Stepper'
 import { BackLink, ButtonPayment, Container, DetailItem, MainSection, MainTitle, ShipPayment, SummarySection, TotalPrice } from '../style/Styled-Component'
 import { ListShipment, ListPayment} from '../Static/StaticList'
 
+const Options = styled.div`
+    display: flex;
+    margin: 25px 0 60px 0;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    width: 154px;
+    height: 34px;
+    border: solid ${(props) => props.name === props.set ? "2px rgba(27, 217, 123, 1)" : "1px #CCCCCC"};
+    padding: 13px;
+    display: flex;
+    margin-right: 10px;
+    background-color: ${(props) => props.name === props.set ? "rgba(27, 217, 123, 0.1)" : "#fff"};
+
+    div{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .shipment{
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+    .payment{
+        font-size: 16px;
+        font-weight: 500;
+    }
+
+    .price{
+        font-size: 16px;
+        font-weight: 700;
+    }
+`
+
 const Payment = () => {
-    const [shipment, setShipment] = useState(ListShipment[0])
-    const [payment, SetPayment] = useState("e-Wallet")
+    const [shipment, setShipment] = useState(window.localStorage.getItem('payment') ? JSON.parse(window.localStorage.getItem('payment')).shipment : ListShipment[0])
+    const [payment, SetPayment] = useState(window.localStorage.getItem('payment') ? JSON.parse(window.localStorage.getItem('payment')).paymentType : "e-Wallet")
     const navigate = useNavigate()
+
+    useEffect(()=>{
+        window.localStorage.setItem('payment', JSON.stringify({shipment : shipment, paymentType : payment}));
+        
+    }, [payment, shipment])
 
     const onSubmit = () => {
         navigate("/finish")
@@ -24,46 +64,12 @@ const Payment = () => {
         SetPayment(pay)
     }
 
-    const Options = styled.div`
-        display: flex;
-        margin: 25px 0 60px 0;
-        align-items: center;
-        justify-content: space-between;
-        cursor: pointer;
-        width: 154px;
-        height: 34px;
-        border: solid ${(props) => props.name === props.set ? "2px rgba(27, 217, 123, 1)" : "1px #CCCCCC"};
-        padding: 13px;
-        display: flex;
-        margin-right: 10px;
-        background-color: ${(props) => props.name === props.set ? "rgba(27, 217, 123, 0.1)" : "#fff"};
-
-        div{
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        .shipment{
-            font-size: 13px;
-            font-weight: 500;
-        }
-
-        .payment{
-            font-size: 16px;
-            font-weight: 500;
-        }
-
-        .price{
-            font-size: 16px;
-            font-weight: 700;
-        }
-    `
     const rupiah = (number)=>{
         return new Intl.NumberFormat("id-ID", {
           style: "currency",
           currency: "IDR"
         }).format(number);
-      }
+    }
 
   return (
     <Container>
@@ -112,22 +118,22 @@ const Payment = () => {
             </div>
             <SummarySection>
                 <div>
-                <h2>Summary</h2>
-                <p className="item">10 items purchased</p>
-                <ShipPayment>
-                    <span></span>
-                    <div>
-                        <p className='info'>Delivery estimation</p>
-                        <p className='detail'>{shipment.estimate} by {shipment.name}</p>
-                    </div>
-                </ShipPayment>
-                <ShipPayment>
-                    <span></span>
-                    <div>
-                        <p className='info'>Payment method</p>
-                        <p className='detail'>{payment}</p>
-                    </div>
-                </ShipPayment>
+                    <h2>Summary</h2>
+                    <p className="item">10 items purchased</p>
+                    <ShipPayment>
+                        <span></span>
+                        <div>
+                            <p className='info'>Delivery estimation</p>
+                            <p className='detail'>{shipment.estimate} by {shipment.name}</p>
+                        </div>
+                    </ShipPayment>
+                    <ShipPayment>
+                        <span></span>
+                        <div>
+                            <p className='info'>Payment method</p>
+                            <p className='detail'>{payment}</p>
+                        </div>
+                    </ShipPayment>
                 </div>
     
                 <div className="detail-payment">
@@ -149,6 +155,7 @@ const Payment = () => {
                     </TotalPrice>
                     <ButtonPayment onClick={onSubmit}>Pay with {payment} </ButtonPayment>
                 </div>
+
             </SummarySection>
         </MainSection>
         

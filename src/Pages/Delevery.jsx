@@ -1,153 +1,136 @@
-import React, { useState } from 'react'
-import { useForm } from 'react-hook-form'
+import React, { useEffect, useState } from 'react'
+import useFormPersist from 'react-hook-form-persist'
+import { useForm, FormProvider, useFormContext } from 'react-hook-form'
 import { HiOutlineArrowLeft } from 'react-icons/hi'
 import styled from 'styled-components'
 import Checkbox from '../components/Checkbox'
 import Stepper from '../components/Stepper'
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from "yup";
 import { BackLink, ButtonPayment, Container, DetailItem, MainSection, MainTitle, SummarySection, TotalPrice } from '../style/Styled-Component'
 import { useNavigate } from 'react-router-dom'
+import Input from '../components/Input'
 
-const schema = yup.object({
-    name: yup.string().required(),
-    phone: yup.string().required(),
-    address: yup.string().max(120).required(),
-});
+const Head = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
 
 const Delevery = () => {
     
-    const [checked, setChecked] = useState(false)
-    const { register, handleSubmit, formState: { errors }, trigger } = useForm({
-        resolver: yupResolver(schema),
-    });
+    const [checked, setChecked] = useState( JSON.parse(window.localStorage.getItem('checkDistributor') || false) )
+
+    const { register, handleSubmit, formState: { errors }, trigger, resetField, setValue, watch } = useForm();
+
+    useFormPersist('form', {watch, setValue});
+
     const navigate = useNavigate()
-    const onSubmit = () => {
-    navigate("/payment")};
+
+    useEffect(()=>{
+
+      window.localStorage.setItem('checkDistributor', checked);
+
+      if(checked === false){
+        resetField("dropshipperName");
+        resetField("dropshipperPhone");
+      }
+
+    }, [checked, resetField])
+
+    const onSubmit = (data) => {
+      console.log("halo")
+      console.log(data)
+      navigate("/payment")
+    };
 
     const handleCheckboxChange = (event) => {
       setChecked(event.target.checked)
     }
-  
-    const Head = styled.div`
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    `
-    const InputStyle = styled.div`
-      width: 100%;
-      padding: 28px 15px 10px 15px;
-      border: 1px solid ${(props) => props.err ? "red" : "#1BD97B"};;
-      position: relative;
-      margin-bottom: 10px;
-  
-      input, .area{
-        width: 100%;
-        display: block;
-        background: transparent;
-        border: none;
-        outline: none;
-        color: black;
-        font-size: 16px;
-        ${(props) => props.check === false ? "pointer-events: none" : ""};
-      }
-  
-      .area{
-        height: 90px;
-      }
-  
-      input:focus + label, input:required:valid + label, .area:focus + label, .area:required:valid + label{
-          color: #1BD97B;
-          font-size: 13px;
-          transform: translateY(10px);
-      }
-  
-      label{
-        position: absolute;
-        top: 0;
-        color: black;
-        font-size: 16px;
-        font-weight: 400;
-        ${(props) => props.check === false? "pointer-events: none" : ""};
-        transform: translateY(20px);
-        transition: all 400ms ease-in-out;
-      }
-    `
+
+    register('name', { 
+      onChange: (e) => console.log(e.target.value , errors) 
+    })
+
+    const rupiah = (number)=>{
+      return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR"
+      }).format(number);
+    }
 
     return (
         <Container>
-        <Stepper />
-  
-        <BackLink top="-35px" left="40px">
-          <HiOutlineArrowLeft />
-          <p>Back to cart</p>
-        </BackLink>
-  
-        <MainSection>
-          <form onSubmit={handleSubmit(onSubmit)} style={{width: "100%", marginRight: "30px"}}>
-              <Head>
-                <MainTitle>Delivery Details</MainTitle>
-                <label>
-                  <Checkbox
-                    checked={checked}
-                    onChange={handleCheckboxChange}
-                  />
-                  <span style={{ marginLeft: 8 }}>Send as dropshipper</span>
-                </label>
-              </Head>
-              <div style={{display: "flex", paddingTop: "35px"}}>
-                <div style={{width: "370px", paddingRight: "70px"}}>
-                  <InputStyle>
-                    <input id="name" type="text" {...register("name")} required/>
-                    <label htmlFor="name">Name</label>
-                  </InputStyle>
-                  <InputStyle>
-                    <input id="phone" type="tel" {...register("phone")} required/>
-                    <label htmlFor="phone">Phone Number</label>
-                  </InputStyle>
-                  <InputStyle>
-                    <textarea className="area" {...register("address")} id="address" type="text" required/>
-                    <label htmlFor="address">Delivery Address</label>
-                  </InputStyle>
-                </div>
-                <div style={{width: "270px"}}>
-                  <InputStyle check={checked}>
-                    <input  id="dropshipperName" {...register("dropshipperName")} type="text" required/>
-                    <label htmlFor="dropshipperName">Dropshipper Name</label>
-                  </InputStyle>
-                  <InputStyle check={checked}>
-                    <input  id="dropshipperPhone" {...register("dropshipperPhone")} type="tel" required/>
-                    <label htmlFor="dropshipperPhone">Dropshipper Phone Number</label>
-                  </InputStyle>
-                </div>
-                
+          <Stepper />
+    
+          <BackLink top="-35px" left="40px">
+            <HiOutlineArrowLeft />
+            <p>Back to cart</p>
+          </BackLink>
+    
+          <MainSection>
+            
+              <form onSubmit={handleSubmit(onSubmit)} style={{width: "100%", marginRight: "30px"}}>
+                  <Head>
+                    <MainTitle>Delivery Details</MainTitle>
+                    <label>
+                      <Checkbox
+                        checked={checked}
+                        onChange={handleCheckboxChange}
+                      />
+                      <span style={{ marginLeft: 8 }}>Send as dropshipper</span>
+                    </label>
+                  </Head>
+                  <div style={{display: "flex", paddingTop: "35px"}}>
+                    <div style={{width: "370px", paddingRight: "70px"}}>
+                      
+                      <Input type="text" label="Name" name="name" register={register}></Input>
+
+                      <Input type="tel" label="Phone Number" name="phone" register={register}></Input>
+                      
+                      <Input as="textarea" label="Delivery Address" name="address" register={register}></Input>
+
+                    </div>
+                    <div style={{width: "270px"}}>
+
+                      <Input type="text" check={checked} label="Dropshipper Name" name="dropshipperName" register={register}></Input>
+
+                      <Input type="text" check={checked} label="Dropshipper Phone Number" name="dropshipperPhone" register={register}></Input>
+
+                    </div>
+                  </div>
+              </form>
+
+            <SummarySection>
+    
+              <div>
+                <h2>Summary</h2>
+                <p className="item">10 items purchased</p>
               </div>
-          </form>
-          <SummarySection>
-  
-            <div>
-              <h2>Summary</h2>
-              <p className="item">10 items purchased</p>
-            </div>
-  
-            <div className="detail-payment">
-              <DetailItem>
-                <p>Cost of goods</p>
-                <p className="price">500,000</p>
-              </DetailItem>
-              <DetailItem>
-                <p>Dropshipping Fee</p>
-                <p className="price">5,900</p>
-              </DetailItem>
-              <TotalPrice>
-                <p>Total</p>
-                <p>505,900</p>
-              </TotalPrice>
-              <ButtonPayment onClick={onSubmit}>Continue to Payment</ButtonPayment>
-            </div>
-  
-          </SummarySection>
-        </MainSection>
+    
+              <div className="detail-payment">
+                <DetailItem>
+                  <p>Cost of goods</p>
+                  <p className="price">Rp 500.000,00</p>
+                </DetailItem>
+
+                {checked ? 
+                    <DetailItem>
+                      <p>Dropshipping Fee</p>
+                      <p className="price">Rp 5.900,00</p>
+                    </DetailItem>
+                    :
+                    <></>
+                }
+
+                <TotalPrice>
+                  <p>Total</p>
+                  <p>{checked ? rupiah(505900) : rupiah(500000)}</p>
+                </TotalPrice>
+
+                <ButtonPayment onClick={handleSubmit(onSubmit)}>Continue to Payment</ButtonPayment>
+              </div>
+    
+            </SummarySection>
+          </MainSection>
   
       </Container>
     )
