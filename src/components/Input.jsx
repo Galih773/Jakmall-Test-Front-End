@@ -33,13 +33,13 @@ const StyledInput = styled.input`
     ${(props) => props.check === false ? "pointer-events: none" : ""};
 
     &:focus + ${StyledLabel}, &:required:valid + ${StyledLabel} {
-        color: ${(props) => props.err ? "red" : "#1BD97B"};
+        color: ${(props) => props.err ? "#FF8A00" : "#1BD97B"};
         font-size: 13px;
         transform: translate(15px, 10px);
     }
 
     &:focus, &:required:valid {
-        border: 1px solid ${(props) => props.err ? "red" : "#1BD97B"};
+        border: 1px solid ${(props) => props.err ? "#FF8A00" : "#1BD97B"};
     }
 `
 
@@ -54,7 +54,7 @@ const Input = ({err, check, name, type, label, register, as}) => (
         {as ? 
             <TextArea err={err} id={name} type={type} {...register(name)} required></TextArea>
             :
-            <StyledInput check={check} err={err} id={name} type={type} {...register(name)} required ></StyledInput>
+            <StyledInput check={check} err={err} id={name} type={type} {...register(name, {required: true})} required ></StyledInput>
         }
         <StyledLabel check={check} htmlFor={name}>{label}</StyledLabel>
     </ContainerInput>

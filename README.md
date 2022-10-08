@@ -1,3 +1,6 @@
+# Description
+in this project I have created 3 pages for the flow of payments for an item, on the first page there is a form with real-time validation, on the second page there are payment and shippment options, on the third page there is a generate order id. On the first to third pages when the page is refreshed there is no change in data, except for the order id.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
