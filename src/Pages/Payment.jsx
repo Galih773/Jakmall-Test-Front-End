@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { HiOutlineArrowLeft } from 'react-icons/hi'
 import {FcCheckmark} from 'react-icons/fc'
-import { NavLink, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import Stepper from '../components/Stepper'
-import { BackLink, ButtonPayment, Container, DetailItem, MainSection, MainTitle, ShipPayment, SummarySection, TotalPrice } from '../style/Styled-Component'
+import { ButtonPayment, Container, DetailItem, MainSection, MainTitle, ShipPayment, SummarySection, TotalPrice, WrapperSection } from '../components/Styled-Component'
 import { ListShipment, ListPayment} from '../Static/StaticList'
+import BackLink from '../components/BackLink'
+
+const WrapperOption = styled.div`
+    display: flex;
+`
 
 const Options = styled.div`
     display: flex;
@@ -75,34 +79,30 @@ const Payment = () => {
     <Container>
         <Stepper />
 
-        <NavLink to="/">
-            <BackLink top="-35px" left="40px">
-                <HiOutlineArrowLeft />
-                <p>Back to delivery</p>
-            </BackLink>
-        </NavLink>
-
-        <MainSection>
-            <div style={{width: "100%"}}>
+        <BackLink to="/">
+            Back to delivery
+        </BackLink>
+        
+        <WrapperSection>
+            <MainSection>
                 <MainTitle>Shipment</MainTitle>
-                {/* List Shipment */}
-                <div style={{display: "flex"}}>
+                
+                <WrapperOption>
                     {ListShipment.map((shipp, index) => (
                         <Options key={index} onClick={()=>changeShipment(shipp)} name={shipp.name} set={shipment.name}>
-                        <div>
-                            <p className='shipment'>{shipp.name}</p>
-                            <p className='price'>{rupiah(shipp.price)}</p>
-                        </div>
-                        {shipp.name === shipment.name ? <FcCheckmark /> : ""}
-                        
-                        </Options>
+                            <div>
+                                <p className='shipment'>{shipp.name}</p>
+                                <p className='price'>{rupiah(shipp.price)}</p>
+                            </div>
 
+                            {shipp.name === shipment.name ? <FcCheckmark /> : ""}
+                        </Options>
                     ))}
-                    
-                </div>
+                </WrapperOption>
+
                 <MainTitle>Payment</MainTitle>
-                {/* List Shipment */}
-                <div style={{display: "flex"}}>
+               
+                <WrapperOption>
                     {ListPayment.map((pay, index)=>(
                         <Options onClick={()=>changePayment(pay.name)} key={index} name={pay.name} set={payment}>
                             <div>
@@ -110,12 +110,13 @@ const Payment = () => {
                                 {pay.name === "e-Wallet" ? <p className='price'>{pay.balance} left</p> : ""}
                                 
                             </div>
+
                             {pay.name === payment ? <FcCheckmark /> : ""}
                         </Options>
-                    ))}
-                    
-                </div>
-            </div>
+                    ))}  
+                </WrapperOption>
+            </MainSection>
+
             <SummarySection>
                 <div>
                     <h2>Summary</h2>
@@ -155,10 +156,8 @@ const Payment = () => {
                     </TotalPrice>
                     <ButtonPayment onClick={onSubmit}>Pay with {payment} </ButtonPayment>
                 </div>
-
             </SummarySection>
-        </MainSection>
-        
+        </WrapperSection>
     </Container>
   )
 }

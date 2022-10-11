@@ -1,23 +1,23 @@
 import React, { useState } from 'react'
-import { HiOutlineArrowLeft } from 'react-icons/hi'
-import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
+import BackLink from '../components/BackLink'
 import Stepper from '../components/Stepper'
-import { BackLink, Container, DetailItem, MainSection, MainTitle, ShipPayment, SummarySection, TotalPrice } from '../style/Styled-Component'
+import { Container, DetailItem, MainSection, MainTitle, ShipPayment, SummarySection, TotalPrice, WrapperSection } from '../components/Styled-Component'
 
 const Thankyou = styled.div`
-width: 350px;
-margin: auto;
+    width: 350px;
+    margin: 70px auto 0;
 `
 const Message = styled.div`
 margin-top: 30px;
-font-size: 14px;
-font-weight: 400;
+    font-size: 14px;
+    font-weight: 400;
+    margin-bottom: 40px;
 
-.order {
-    font-weight: 500;
-    margin-bottom: 10px;
-}
+    .order {
+        font-weight: 500;
+        margin-bottom: 10px;
+    }
 `
 
 const Finish = () => {
@@ -47,23 +47,22 @@ const Finish = () => {
     <Container>
         <Stepper />
 
-        <MainSection top="5px">
-            <div style={{width: "100%", paddingTop: "70px"}}>
+        <WrapperSection top="40px">
+            <MainSection>
                 <Thankyou>
                     <MainTitle>Thank you</MainTitle>
+
                     <Message>
                         <p className='order'>Order ID : {randomId}</p>
                         <p>Your order will be delivered today with GO-SEND</p>
                     </Message>
-                    <NavLink to="/">
-                        <BackLink top="70px" left="0px">
-                            <HiOutlineArrowLeft />
-                            <p>Go to homepage</p>
-                        </BackLink>
-                    </NavLink>
+                    
+                    <BackLink to="/">
+                        Go to homepage
+                    </BackLink>
                 </Thankyou>
+            </MainSection>
 
-            </div>
             <SummarySection>
                 <div>
                     <h2>Summary</h2>
@@ -103,7 +102,7 @@ const Finish = () => {
                     </TotalPrice>
                 </div>
             </SummarySection>
-        </MainSection>
+        </WrapperSection>
         
     </Container>
   )

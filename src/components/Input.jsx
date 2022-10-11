@@ -1,5 +1,4 @@
 import React from 'react'
-import { useFormContext } from 'react-hook-form';
 import styled from 'styled-components'
 
 // const { register } = useFormContext();
@@ -45,7 +44,7 @@ const StyledInput = styled.input`
 
 const TextArea = styled(StyledInput).attrs({as: "textarea"})`
     height: 90px;
-`;
+`
 
 const Input = ({err, check, name, type, label, register, as}) => (
     
