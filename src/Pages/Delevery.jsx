@@ -59,6 +59,7 @@ const ListInput = styled.div`
 
     .dropshipperInput{
       width: 310px;
+      margin-top: 0;
     }
   }
 `
