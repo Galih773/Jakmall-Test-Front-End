@@ -1,5 +1,5 @@
 # Description
-in this project I have created 3 pages for the flow of payments for an item, on the first page there is a form with real-time validation, on the second page there are payment and shippment options, on the third page there is a generate order id. On the first to third pages when the page is refreshed there is no change in data, except for the order id.
+In this project I have created 3 pages about the checkout process of an item. These three pages are styled using Styled Components and can be responsive for mobile, besides that when the page is refreshed there will be no changes to the data or appearance. on the first page there is an input form, I handle the input form using React Hook Form. And on page 2 there is a display to choose payment and shipment. and on the third page, the Order ID will be displayed.
 
 # Getting Started with Create React App
 
