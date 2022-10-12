@@ -5,11 +5,22 @@ import Stepper from '../components/Stepper'
 import { Container, DetailItem, MainSection, MainTitle, ShipPayment, SummarySection, TotalPrice, WrapperSection } from '../components/Styled-Component'
 
 const Thankyou = styled.div`
-    width: 350px;
-    margin: 70px auto 0;
+    width:100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    margin: 40px auto 30px;
+
+    @media (min-width: 768px) {
+        display: block;
+        width: 350px;
+        margin: 70px auto 0;
+        text-align: left;
+    }
 `
 const Message = styled.div`
-margin-top: 30px;
+    margin-top: 30px;
     font-size: 14px;
     font-weight: 400;
     margin-bottom: 40px;
@@ -21,26 +32,22 @@ margin-top: 30px;
 `
 
 const Finish = () => {
+    const order = JSON.parse(window.sessionStorage.getItem("order"))
 
-    const [shipment] = useState(JSON.parse(window.localStorage.getItem('payment')).shipment )
-    const [payment] = useState(JSON.parse(window.localStorage.getItem('payment')).paymentType)
-    const [randomId, setRandomId] = useState();
-
-    const randomAlphaNumeric = (length, chars) => {
-        var result = '';
-        for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
-        return result;
-    }
-
-    useState(()=>{
-        setRandomId(randomAlphaNumeric(5, '23456789abcdefghijkmnopqrstuvwxyzABCDEFGHIJKLMNPQRSTUVWXYZ'))
-    },[])
+    const [shipment] = useState(order.shipment )
+    const [payment] = useState(order.payment)
+    const [randomId] = useState(order.orderID);
 
     const rupiah = (number)=>{
         return new Intl.NumberFormat("id-ID", {
           style: "currency",
           currency: "IDR"
         }).format(number);
+    }
+
+    const resetOrder = () => {
+        console.log("masuk")
+        window.sessionStorage.removeItem("order")
     }
 
   return (
@@ -57,7 +64,7 @@ const Finish = () => {
                         <p>Your order will be delivered today with GO-SEND</p>
                     </Message>
                     
-                    <BackLink to="/">
+                    <BackLink to="/" onClick={resetOrder}>
                         Go to homepage
                     </BackLink>
                 </Thankyou>

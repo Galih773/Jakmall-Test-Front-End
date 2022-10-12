@@ -27,15 +27,19 @@ const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
 
 const StyledCheckbox = styled.div`
   display: inline-block;
-  width: 20px;
-  height: 20px;
+  width: 15px;
+  height: 15px;
   background: white;
   border: 2px solid ${props => (props.checked ? '#1BD97B' : '#CCCCCC')};
   /* transition: all 150ms; */
 
-
   ${Icon} {
     visibility: ${props => (props.checked ? 'visible' : 'hidden')}
+  }
+
+  @media (min-width: 768px) {
+    width: 20px;
+    height: 20px;
   }
 `
 

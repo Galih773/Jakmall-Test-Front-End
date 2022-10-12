@@ -8,7 +8,8 @@ const WrapperLink = styled(NavLink)`
     align-items: center;
     color: black;
     cursor: pointer;
-    font-size: 12px;
+    font-size: 16px;
+    width: fit-content;
 
     @media (min-width: 768px) {
         font-size: 16px;
@@ -24,11 +25,11 @@ const TextLink = styled.p`
     }
 `
 
-const BackLink = ({children, to}) => {
+const BackLink = ({children, to, onClick}) => {
 
   return (
     <>
-        <WrapperLink to={to}>
+        <WrapperLink to={to} onClick={onClick}>
             <HiOutlineArrowLeft />
             <TextLink>{children}</TextLink>
         </WrapperLink>

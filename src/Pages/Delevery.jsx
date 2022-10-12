@@ -12,9 +12,13 @@ import * as yup from "yup";
 import BackLink from '../components/BackLink'
 
 const Head = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+
+  
+  @media (min-width: 768px) {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 `
 
 const Counter = styled.p`
@@ -25,20 +29,37 @@ const Counter = styled.p`
 `
 
 const From = styled.form`
-  margin-right: 32px;
+  
+  @media (min-width: 768px) {
+    margin-right: 32px;
+  }
 `
 
 const ListInput = styled.div`
-  display: flex;
-  padding-top: 35px;
+  padding-top: 10px;
 
   .userInput{
-    width: 370px;
-    padding-right: 70px;
+    width: 340px;
+    margin-right: 65px;
   }
 
   .dropshipperInput{
-    width: 270px;
+    margin-top: 10px;
+    width: 340px;
+  }
+
+  @media (min-width: 768px) {
+    display: flex;
+    padding-top: 35px;
+
+    .userInput{
+      width: 350px;
+      margin-right: 65px;
+    }
+
+    .dropshipperInput{
+      width: 310px;
+    }
   }
 `
 
@@ -49,41 +70,42 @@ const schema = yup.object({
   dropshipper: yup.boolean(),
   dropshipperName: yup.string().when('dropshipper', {
     is: true,
-    then: yup.string().required("Must enter email address")
+    then: yup.string().required()
   }),
   dropshipperPhone: yup.string().matches(/^[0-9-+,]*$/).min(6).max(20).when('dropshipper', {
     is: true,
-    then: yup.string().required("Must enter email address")
+    then: yup.string().required()
   }),
 }).required();
 
 const Delevery = () => {
-    
-    const [checked, setChecked] = useState( JSON.parse(window.localStorage.getItem('checkDistributor') || false) )
 
+    const order = window.sessionStorage.getItem("order")
+
+    const [checked, setChecked] = useState( order ? JSON.parse(order).dropshipper : false )
+    
     const { register, handleSubmit, formState: { errors } , resetField, setValue, watch, getValues} = useForm({ mode: 'onChange',
-      resolver: yupResolver(schema)
+      resolver: yupResolver(schema),
     });
 
-    useFormPersist('form', {watch, setValue});
+    useFormPersist('order', {watch, setValue});
 
     const navigate = useNavigate()
 
     useEffect(()=>{
 
-      window.localStorage.setItem('checkDistributor', checked);
-
       if(checked === false){
         resetField("dropshipperName");
         resetField("dropshipperPhone");
         setValue('dropshipper', false);
+        
       } else {
         setValue('dropshipper', true);
       }
 
       console.log(errors)
 
-    }, [checked, resetField, setValue, errors])
+    }, [checked, resetField, setValue, errors, getValues])
 
     const onSubmit = (data) => {
       console.log("halo")
@@ -129,9 +151,9 @@ const Delevery = () => {
 
                   <ListInput>
                     <div className='userInput'>
-                      <Input err={errors.email} type="text" label="Email" name="email" register={register}></Input>
+                      <Input err={errors.email} label="Email" name="email" register={register}></Input>
 
-                      <Input err={errors.phone} type="tel" label="Phone Number" name="phone" register={register}></Input>
+                      <Input err={errors.phone} label="Phone Number" name="phone" register={register}></Input>
                   
                       <Input err={errors.address} as="textarea" label="Delivery Address" name="address" register={register}></Input>
                       
@@ -140,9 +162,9 @@ const Delevery = () => {
 
                     <div className='dropshipperInput'>
 
-                      <Input err={errors.dropshipperName}  type="text" check={checked} label="Dropshipper Name" name="dropshipperName" register={register}></Input>
+                      <Input err={errors.dropshipperName} check={checked} label="Dropshipper Name" name="dropshipperName" register={register}></Input>
 
-                      <Input err={errors.dropshipperPhone} type="text" check={checked} label="Dropshipper Phone Number" name="dropshipperPhone" register={register}></Input>
+                      <Input err={errors.dropshipperPhone} check={checked} label="Dropshipper Phone Number" name="dropshipperPhone" register={register}></Input>
 
                     </div>
                   </ListInput>

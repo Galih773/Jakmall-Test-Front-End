@@ -9,20 +9,20 @@ import BackLink from '../components/BackLink'
 
 const WrapperOption = styled.div`
     display: flex;
+    flex-wrap: wrap;
 `
 
 const Options = styled.div`
     display: flex;
-    margin: 25px 0 60px 0;
+    margin: 0px 10px 20px 0;
     align-items: center;
     justify-content: space-between;
     cursor: pointer;
-    width: 154px;
+    width: 100%;
     height: 34px;
     border: solid ${(props) => props.name === props.set ? "2px rgba(27, 217, 123, 1)" : "1px #CCCCCC"};
     padding: 13px;
     display: flex;
-    margin-right: 10px;
     background-color: ${(props) => props.name === props.set ? "rgba(27, 217, 123, 0.1)" : "#fff"};
 
     div{
@@ -44,19 +44,38 @@ const Options = styled.div`
         font-size: 16px;
         font-weight: 700;
     }
+
+    @media (min-width: 768px) {
+        width: 154px;
+        height: 34px;
+        margin: 25px 10px 60px 0;
+        
+    }
 `
 
 const Payment = () => {
-    const [shipment, setShipment] = useState(window.localStorage.getItem('payment') ? JSON.parse(window.localStorage.getItem('payment')).shipment : ListShipment[0])
-    const [payment, SetPayment] = useState(window.localStorage.getItem('payment') ? JSON.parse(window.localStorage.getItem('payment')).paymentType : "e-Wallet")
+    const order = JSON.parse(window.sessionStorage.getItem("order"))
+
+    const [shipment, setShipment] = useState(order.shipment !== undefined ? order.shipment : ListShipment[0])
+    const [payment, SetPayment] = useState(order.payment !== undefined ? order.payment : "e-Wallet")
     const navigate = useNavigate()
 
     useEffect(()=>{
-        window.localStorage.setItem('payment', JSON.stringify({shipment : shipment, paymentType : payment}));
+        order.shipment = shipment;
+        order.payment = payment;
+        window.sessionStorage.setItem('order', JSON.stringify(order))
         
-    }, [payment, shipment])
+    }, [order, payment, shipment])
+
+    const randomAlphaNumeric = (length, chars) => {
+        var result = '';
+        for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
+        return result;
+    }
 
     const onSubmit = () => {
+        order.orderID = randomAlphaNumeric(5, '23456789abcdefghijkmnopqrstuvwxyzABCDEFGHIJKLMNPQRSTUVWXYZ')
+        window.sessionStorage.setItem('order', JSON.stringify(order))
         navigate("/finish")
     }
 
@@ -77,7 +96,7 @@ const Payment = () => {
 
   return (
     <Container>
-        <Stepper />
+        <Stepper submit={onSubmit}/>
 
         <BackLink to="/">
             Back to delivery
