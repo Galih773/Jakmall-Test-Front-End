@@ -1,12 +1,12 @@
 # Description
 This project is a demonstration of the checkout process on an e-commerce website. It consists of three pages:
 
-1.The first page is a delivery form where the user can enter their shipping information.
-  [Delivery](https://imgur.com/vCrnMVV)
-2.The second page is where the user can choose their payment and shipment methods.
-  [Payment](https://imgur.com/2JjG67y)
-3.The third and final page is the completion page, which displays the order ID and a summary of the checkout process.
-  [Thankyou](https://imgur.com/toOyxr0)
+1.The first page is a delivery form where the user can enter their shipping information.\
+  [Delivery](https://imgur.com/vCrnMVV).\
+2.The second page is where the user can choose their payment and shipment methods.\
+  [Payment](https://imgur.com/2JjG67y).\
+3.The third and final page is the completion page, which displays the order ID and a summary of the checkout process.\
+  [Thankyou](https://imgur.com/toOyxr0).\
 
 The project is built using Styled Components and React Hook Form, and is designed to be fully responsive on mobile, tablet, and desktop devices.
 
