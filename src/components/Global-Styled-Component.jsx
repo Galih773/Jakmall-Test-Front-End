@@ -1,51 +1,37 @@
 import styled from 'styled-components';
-import { NavLink } from 'react-router-dom';
 
 export const Container = styled.div`
-    width: 350px;
+    width: 100%;
     position: relative;
-    height: fit-content;
+    min-height: 100vh;
     background-color: #fff;
-    margin: 50px auto;
     border-radius: 5px;
     box-shadow: 2px 10px 20px rgba(255, 138, 0, 0.1);
     font-family: 'Montserrat';
-    padding: 30px 10px 10px 10px;
+    padding: 30px 20px 20px 20px;
+
+    @media (min-width: 600px) {
+        width: 100%;
+        background-color: #fff;
+        min-height: 100%;
+        margin: 50px auto; 
+        padding: 40px;
+    }
     
-    @media (min-width: 768px) {
-        width: 1020px;
-        height: 480px;
+    @media (min-width: 1100px) {
+        width: 1100px;
+        height: 550px;
         background-color: #fff;
         margin: 50px auto; 
         padding: 40px;
     }
 `
-
-export const BackLink = styled(NavLink)`
-    display: flex;
-    align-items: center;
-    color: black;
-    cursor: pointer;
-    font-size: 12px;
-
-    p{
-        margin-left: 6px;
-    }
-
-    @media (min-width: 768px) {
-        font-size: 16px;
-        p{
-        margin-left: 10px;
-        }
-    }
-`
-
 export const WrapperSection = styled.div`
     width: 100%;
     height: fit-content;
     margin-top: ${(props) => props.top ? props.top : "20px"};
 
-    @media (min-width: 768px) {
+    @media (min-width: 1100px) {
         display: flex;
         width: 1060px;
         height: 458px;
@@ -66,13 +52,12 @@ export const MainTitle = styled.h1`
     color: #FF8A00;
     margin-bottom: 20px;
 
-    @media (min-width: 768px) {
+    @media (min-width: 600px) {
         font-size: 36px;
         margin-bottom: 0;
     }
 
 `
-
 export const SummarySection = styled.div`
     width: 100%;
     min-height: 300px;
@@ -96,15 +81,19 @@ export const SummarySection = styled.div`
         font-size: 14px;
         font-weight: 400;
         margin-top: 10px;
-    }  
+    }
 
-    @media (min-width: 768px) {
+    @media (min-width: 600px) {
+        margin-top: 20px;
+    }
+
+    @media (min-width: 1100px) {
         width: 340px;
         height: 460px;
         border-left: 1.5px solid rgba(255, 138, 0, 0.3);
         border-top: none;
         padding: 10px 15px 0 15px;
-
+        margin-top: 0;
         .detail-payment{
             margin-top: 0px;
         }
@@ -121,7 +110,6 @@ export const DetailItem = styled.div`
         font-weight: bold;
     }
 `
-
 export const TotalPrice = styled.div`
     font-size: 24px;
     color: #FF8A00;
@@ -140,12 +128,12 @@ export const ButtonPayment = styled.button`
     color: white;
     font-size: 16px;
     font-weight: 500;
+    cursor: pointer;
 
-    @media (min-width: 768px) {
+    @media (min-width: 1100px) {
         width: 260px;
     }
 `
-
 export const ShipPayment = styled.div`
     margin-top: 20px;
     font-size: 14px;
